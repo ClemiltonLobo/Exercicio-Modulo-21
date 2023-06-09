@@ -7,33 +7,36 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     //publics
-    [Header("Lerp")]
-    public Transform target;
-    public float lerpSpeed = 1f;
+    //[Header("Lerp")]
+    //public Transform target;
+    //public float lerpSpeed = 1f;
     public float speed = 1f;
     public string tagToCheckEnemy = "Enemy";
-    public string tagToCheckEndLine = "EndLine";   
+    public string tagToCheckEndLine = "EndLine";
+    public Rigidbody rb;
 
-    
+
 
     //privates
     private Vector3 _pos;
     private bool _canRun;
 
     private void Start()
-    {
+    {        
+        rb = GetComponent<Rigidbody>();
         _canRun = true;
     }
 
     void Update()
     {
         if(!_canRun) return;
-        _pos = target.position;
+        //_pos = target.position;
         _pos.y = transform.position.y;
         _pos.z = transform.position.z;
 
-        transform.position = Vector3.Lerp(transform.position, _pos, lerpSpeed * Time.deltaTime);
-        transform.Translate(transform.forward * speed * Time.deltaTime);
+        //transform.position = Vector3.Lerp(transform.position, _pos, lerpSpeed * Time.deltaTime);
+        //transform.Translate(transform.forward * speed * Time.deltaTime);
+        rb.AddForce(Vector3.forward * speed);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -41,6 +44,10 @@ public class PlayerController : MonoBehaviour
         if(collision.transform.tag == tagToCheckEnemy)
         {
             LoadLoserScene();
+        }
+        if (collision.transform.tag == "Finish")
+        {
+            print("colidiu com a parede");
         }
     }
     private void OnTriggerEnter(Collider other)
