@@ -1,10 +1,13 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
+using Ebac.Core.Singleton;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     //publics
     //[Header("Lerp")]
@@ -15,11 +18,19 @@ public class PlayerController : MonoBehaviour
     public string tagToCheckEndLine = "EndLine";
     public Rigidbody rb;
 
+    [Header("Text PowerUp Name")]
+    public TextMeshPro uiTextPowerUp;
 
+    public bool invecible = true;
+
+    [Header("Collector Candys")]
+    public GameObject CoinCollector;
 
     //privates
     private Vector3 _pos;
     private bool _canRun;
+    private float _currentSpeed;
+    private Vector3 _startPosition;
 
     private void Start()
     {        
@@ -35,8 +46,8 @@ public class PlayerController : MonoBehaviour
         _pos.z = transform.position.z;
 
         //transform.position = Vector3.Lerp(transform.position, _pos, lerpSpeed * Time.deltaTime);
-        //transform.Translate(transform.forward * speed * Time.deltaTime);
-        rb.AddForce(Vector3.forward * speed);
+        //transform.Translate(transform.forward * _currentSpeed * Time.deltaTime);
+        rb.AddForce(Vector3.forward * speed * _currentSpeed);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -73,4 +84,46 @@ public class PlayerController : MonoBehaviour
     {
         _canRun=true;
     }
+
+    #region PowerUps
+
+    public void SetPowerUpText(string s)
+    {
+        uiTextPowerUp.text = s;
+    }
+    public void PowerUpSpeedUp(float f)
+    {
+        _currentSpeed = f;
+    }
+
+    public void SetInvencible(bool b = true)
+    {
+        invecible = b;
+    }
+
+    public void ResetSpeed()
+    {
+        _currentSpeed = speed;
+    }
+
+    public void ChangeFly(float amount, float duration, float animationDuration, Ease ease)
+    {
+        /*var p = transform.position;
+        p.y = _startPosition.y + amount;
+        transform.position = p;*/
+
+        transform.DOMoveY(_startPosition.y + amount, animationDuration).SetEase(ease);//.onComplete(ResetFly);
+        Invoke(nameof(ResetFly), duration);
+    }
+
+    public void ResetFly()
+    {
+        transform.DOMoveY(_startPosition.y, -1f);
+    }
+
+    public void changeCoinCollectorSize(float amount)
+    {
+        CoinCollector.transform.localScale = Vector3.one * amount;
+    }
+    #endregion
 }
