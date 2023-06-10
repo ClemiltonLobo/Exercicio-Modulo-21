@@ -6,12 +6,12 @@ public class TouchController : MonoBehaviour
 {
     public Vector2 pastPosition;
     public float velocity = 1f;
-    public Rigidbody rb;
+    //public Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame

@@ -16,7 +16,7 @@ public class PlayerController : Singleton<PlayerController>
     public float speed = 1f;
     public string tagToCheckEnemy = "Enemy";
     public string tagToCheckEndLine = "EndLine";
-    public Rigidbody rb;
+    //public Rigidbody rb;
 
     [Header("Text PowerUp Name")]
     public TextMeshPro uiTextPowerUp;
@@ -24,17 +24,18 @@ public class PlayerController : Singleton<PlayerController>
     public bool invecible = true;
 
     [Header("Collector Candys")]
-    public GameObject CoinCollector;
+    public GameObject CandyCollector;
 
     //privates
-    private Vector3 _pos;
     private bool _canRun;
+    private Vector3 _pos;
     private float _currentSpeed;
     private Vector3 _startPosition;
 
     private void Start()
-    {        
-        rb = GetComponent<Rigidbody>();
+    {
+        //rb = GetComponent<Rigidbody>();
+        ResetSpeed();
         _canRun = true;
     }
 
@@ -46,15 +47,15 @@ public class PlayerController : Singleton<PlayerController>
         _pos.z = transform.position.z;
 
         //transform.position = Vector3.Lerp(transform.position, _pos, lerpSpeed * Time.deltaTime);
-        //transform.Translate(transform.forward * _currentSpeed * Time.deltaTime);
-        rb.AddForce(Vector3.forward * speed * _currentSpeed);
+        transform.Translate(transform.forward * _currentSpeed * Time.deltaTime);
+        //rb.AddForce(Vector3.forward * speed * _currentSpeed);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.transform.tag == tagToCheckEnemy)
         {
-            LoadLoserScene();
+            if (!invecible) LoadLoserScene();
         }
         if (collision.transform.tag == "Finish")
         {
@@ -65,7 +66,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (other.transform.tag == tagToCheckEndLine)
         {
-            LoadWinnerScene();
+            if (!invecible) LoadWinnerScene();
         }
     }
 
@@ -123,7 +124,7 @@ public class PlayerController : Singleton<PlayerController>
 
     public void changeCoinCollectorSize(float amount)
     {
-        CoinCollector.transform.localScale = Vector3.one * amount;
+        CandyCollector.transform.localScale = Vector3.one * amount;
     }
     #endregion
 }
