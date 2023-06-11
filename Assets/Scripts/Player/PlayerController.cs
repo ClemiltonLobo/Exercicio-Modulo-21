@@ -35,6 +35,7 @@ public class PlayerController : Singleton<PlayerController>
     private void Start()
     {
         //rb = GetComponent<Rigidbody>();
+        _startPosition = transform.position;
         ResetSpeed();
         _canRun = true;
     }

@@ -13,5 +13,13 @@ public class PowerUpFly : PowerUpBase
     {
         base.StartPowerUp();
         PlayerController.Instance.ChangeFly(amountFly, duration, animationDuration, ease);
+        PlayerController.Instance.SetPowerUpText("PowerUp Fly");
+    }
+
+    protected override void EndPowerUp()
+    {
+        base.EndPowerUp();
+        PlayerController.Instance.ResetFly();
+        PlayerController.Instance.SetPowerUpText("");
     }
 }
