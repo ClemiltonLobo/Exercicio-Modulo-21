@@ -5066,4 +5066,4 @@ MonoBehaviour:
   graphicItens: {fileID: 8581849792329725851}
   audioSource: {fileID: 0}
   duration: 5
-  amountToSpeed: 50
+  amountToSpeed: 100
